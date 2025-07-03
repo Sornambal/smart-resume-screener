@@ -3,6 +3,9 @@ import fitz  # PyMuPDF
 import joblib
 import os
 import sys
+import base64
+import nltk
+from nltk.corpus import stopwords
 
 # Setup project path to import utils
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -34,11 +37,22 @@ def load_jd(role_key):
             return f.read()
     return "Job description not available."
 
-# ------------------ 🔷 Streamlit Visual Styling (PHASE 1) ------------------
+def extract_keywords(text):
+    nltk.download('stopwords', quiet=True)
+    words = text.lower().split()
+    stop_words = set(stopwords.words("english"))
+    keywords = [w for w in words if w.isalpha() and w not in stop_words]
+    return set(keywords)
+
+def generate_download_link(text, filename):
+    b64 = base64.b64encode(text.encode()).decode()
+    href = f'<a href="data:file/txt;base64,{b64}" download="{filename}">📄 Download Prediction Report</a>'
+    return href
+
+# ------------------ 🔷 Streamlit Visual Styling ------------------
 
 st.set_page_config(page_title="Smart Resume Screener", layout="centered", page_icon="📄")
 
-# Custom CSS Styling
 st.markdown("""
     <style>
     .main-title {
@@ -67,78 +81,56 @@ st.markdown("""
     <div class="sub-title">Upload your resume and get a prediction of your ideal job role! 💼</div>
 """, unsafe_allow_html=True)
 
-# ------------------ 🔶 Resume Upload and Prediction ------------------
+# ------------------ 🔶 Resume Upload ------------------
 
 uploaded_file = st.file_uploader("📎 Upload Your Resume (PDF format)", type="pdf")
 
 if uploaded_file is not None:
     st.info("✅ Resume uploaded successfully!")
 
-    # Save file temporarily
     with open("temp_resume.pdf", "wb") as f:
         f.write(uploaded_file.read())
 
     try:
-        # Text extraction & prediction
+        # Extract and clean
         raw_text = extract_text_from_pdf("temp_resume.pdf")
         cleaned_text = clean_text(raw_text)
         vect_text = vectorizer.transform([cleaned_text])
         predicted_label = model.predict(vect_text)[0]
         confidence_score = model.predict_proba(vect_text).max()
 
-        # ------------------ ✅ Threshold Check ------------------
-        threshold = 0.45
-        if confidence_score < threshold:
-            st.warning("⚠️ This resume does not closely match any of the 5 job roles. Please try with a different resume or expand job role options.")
+        # ------------------ ✅ Show Prediction ------------------
+        st.success(f"🎯 **Predicted Job Role:** {job_roles[predicted_label]}")
+        st.markdown("### 📊 Confidence Score")
+        st.progress(confidence_score)
+
+        # ------------------ 🧠 Keyword Matching ------------------
+        resume_keywords = extract_keywords(cleaned_text)
+        jd_keywords = extract_keywords(load_jd(predicted_label))
+        common_keywords = resume_keywords.intersection(jd_keywords)
+
+        st.markdown("### 🧠 Matching Keywords Between Resume & JD")
+        if common_keywords:
+            st.success(f"Top matched skills: {', '.join(list(common_keywords)[:10])}")
         else:
-            st.success(f"🎯 **Predicted Job Role:** {job_roles[predicted_label]}")
-            st.markdown("### 📊 Confidence Score")
-            st.progress(confidence_score)
+            st.warning("No matching keywords found between resume and JD.")
 
-            # ------------------ 🔹 Phase 2: Keyword Matching ------------------
-            import nltk
-            from nltk.corpus import stopwords
-            nltk.download('stopwords', quiet=True)
+        # ------------------ 📦 Download Report ------------------
+        report_text = f"""
+        🔍 Resume Screening Report
+        
+        Predicted Job Role: {job_roles[predicted_label]}
+        Confidence Score: {round(confidence_score * 100, 2)}%
+        
+        Matched Keywords: {', '.join(list(common_keywords)[:15])}
+        """
 
-            def extract_keywords(text):
-                words = text.lower().split()
-                stop_words = set(stopwords.words("english"))
-                keywords = [w for w in words if w.isalpha() and w not in stop_words]
-                return set(keywords)
+        st.markdown("### 📄 Download Your Report")
+        st.markdown(generate_download_link(report_text, "resume_analysis.txt"), unsafe_allow_html=True)
 
-            resume_keywords = extract_keywords(cleaned_text)
-            jd_keywords = extract_keywords(load_jd(predicted_label))
-            common_keywords = resume_keywords.intersection(jd_keywords)
-
-            st.markdown("### 🧠 Matching Keywords Between Resume & JD")
-            if common_keywords:
-                st.success(f"Top matched skills: {', '.join(list(common_keywords)[:10])}")
-            else:
-                st.warning("No matching keywords found between resume and JD.")
-
-            # ------------------ 📦 Phase 4: Download Result Button ------------------
-            import base64
-
-            def generate_download_link(text, filename):
-                b64 = base64.b64encode(text.encode()).decode()
-                href = f'<a href="data:file/txt;base64,{b64}" download="{filename}">📄 Download Prediction Result</a>'
-                return href
-
-            report_text = f"""
-            🔍 Resume Screening Result
-            
-            Predicted Job Role: {job_roles[predicted_label]}
-            Confidence Score: {round(confidence_score * 100, 2)}%
-            
-            Matching Keywords: {', '.join(list(common_keywords)[:15])}
-            """
-
-            st.markdown("### 📄 Download Your Report")
-            st.markdown(generate_download_link(report_text, "resume_analysis.txt"), unsafe_allow_html=True)
-
-            # Show JD
-            st.markdown("### 📋 Matched Job Description:")
-            st.code(load_jd(predicted_label), language="text")
+        # ------------------ 📋 Job Description ------------------
+        st.markdown("### 📋 Matched Job Description:")
+        st.code(load_jd(predicted_label), language="text")
 
     except Exception as e:
         st.error(f"❌ Error processing resume: {e}")
@@ -146,7 +138,7 @@ if uploaded_file is not None:
 # ------------------ 🔽 Footer ------------------
 st.markdown("""
     <div class="footer">
-        Made  by <strong>Sornambal</strong> |
+        Made with ❤️ by <strong>Sornambal</strong> |
         <a href="https://github.com/Sornambal" target="_blank">GitHub</a>
     </div>
 """, unsafe_allow_html=True)
