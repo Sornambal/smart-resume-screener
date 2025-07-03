@@ -1,0 +1,25 @@
+Job Role: Data Scientist
+
+Key Responsibilities:
+- Analyze large datasets to discover trends and insights.
+- Build predictive models using machine learning techniques.
+- Work with cross-functional teams to define data-driven strategies.
+- Communicate results to stakeholders using visualizations.
+
+Required Skills:
+- Python, R
+- SQL
+- Pandas, NumPy
+- Scikit-learn, TensorFlow, Keras
+- Data Cleaning & Preprocessing
+- Statistics & Probability
+- Data Visualization (Power BI, Matplotlib, Seaborn)
+- Exploratory Data Analysis (EDA)
+- Machine Learning (classification, regression, clustering)
+- NLP, Text Mining (optional)
+
+Soft Skills:
+- Problem solving
+- Communication
+- Team collaboration
+

@@ -1,0 +1,22 @@
+
+Job Role: Cloud & DevOps Engineer
+
+Key Responsibilities:
+- Automate deployments and monitor cloud infrastructure.
+- Set up CI/CD pipelines.
+- Ensure scalability, reliability, and security of systems.
+
+Required Skills:
+- AWS / Azure / GCP
+- Docker, Kubernetes
+- Jenkins / GitHub Actions
+- Terraform / Ansible (IaC tools)
+- Linux commands and shell scripting
+- Git, GitHub
+- Monitoring Tools (Prometheus, Grafana)
+- Networking & Firewalls
+
+Soft Skills:
+- Analytical thinking
+- System reliability
+- Automation mindset

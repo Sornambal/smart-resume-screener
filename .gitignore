@@ -1,0 +1,21 @@
+# Python ignores
+__pycache__/
+*.pyc
+*.pkl
+*.csv
+*.zip
+*.log
+
+# Environment
+.venv/
+venv/
+env/
+ENV/
+
+# Streamlit & notebooks
+.ipynb_checkpoints/
+temp_resume.pdf
+
+# System files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,22 @@
+Job Role: Web Developer
+
+Key Responsibilities:
+- Develop user-friendly, responsive websites and web apps.
+- Work with designers to turn mockups into functional websites.
+- Optimize web applications for performance and scalability.
+
+Required Skills:
+- HTML5, CSS3, JavaScript
+- ReactJS / Angular / Vue
+- Bootstrap, TailwindCSS
+- REST APIs
+- Git, GitHub
+- Node.js (optional)
+- Frontend Validation
+- Responsive Design
+- Cross-Browser Compatibility
+
+Soft Skills:
+- Creativity
+- Attention to detail
+- Collaboration with designers & developers

@@ -1,0 +1,23 @@
+Job Role: Full Stack Developer
+
+Key Responsibilities:
+- Build complete web applications — frontend and backend.
+- Integrate APIs and databases.
+- Ensure secure and scalable web architecture.
+
+Required Skills:
+- Frontend: HTML, CSS, JavaScript, React/Angular
+- Backend: Node.js / Django / Flask
+- Databases: MySQL, MongoDB
+- RESTful APIs
+- Git, GitHub
+- JWT Authentication
+- Deployment: Heroku / Render / AWS / Vercel
+- CI/CD Basics
+- MVC Architecture
+
+Soft Skills:
+- End-to-end thinking
+- Project ownership
+- Collaboration across teams
+

@@ -1,0 +1,23 @@
+Job Role: Embedded Systems Engineer
+
+Key Responsibilities:
+- Design and develop embedded software for microcontrollers.
+- Debug and test firmware for performance and stability.
+- Work closely with hardware teams.
+
+Required Skills:
+- C / C++
+- ARM / AVR / PIC microcontrollers
+- RTOS (Real-Time Operating Systems)
+- GPIO, UART, SPI, I2C, ADC
+- Embedded Linux
+- Debugging tools (JTAG, Oscilloscope)
+- Circuit design understanding
+- Firmware development
+- Device drivers
+
+Soft Skills:
+- Problem-solving
+- Patience and precision
+- Attention to hardware-software interaction
+
